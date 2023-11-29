@@ -112,9 +112,9 @@ public class Monster {
 
     public boolean isDead() {
         if (health > 0) {
-            return true;
+            return false;
         }
-        return false;
+        return true;
     }
 
     public int getHealth() {

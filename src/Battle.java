@@ -32,7 +32,7 @@ public class Battle {
         for (int i = 1; i <= 10 - barAmount; i++) {
             returnStr += "x ";
         }
-        return returnStr;
+        return returnStr + "]";
     }
 
     public int superEffective(Monster attackingMonster, Monster defendingMonster) {
@@ -54,7 +54,7 @@ public class Battle {
         return 1;
     }
 
-    public boolean initiateBattle() {
+    public void initiateBattle() {
         Monster fasterMonster;
         Monster slowerMonster;
         if (player.getSpeed() < npc.getSpeed()) {
@@ -67,35 +67,49 @@ public class Battle {
         System.out.println(fasterMonster.getName() + " VS " + slowerMonster.getName());
         while (!player.isDead() && !npc.isDead()) {
             System.out.println("-----------------------");
-            System.out.println(fasterMonster.getName());
+            System.out.print(fasterMonster.getName());
+            if (fasterMonster == player) {
+                System.out.print(" (Player) \n");
+            } else {
+                System.out.println("\n ");
+            }
             System.out.println("-----------------------");
-            System.out.println(displayHealth(player));
+            System.out.println(displayHealth(fasterMonster));
+            System.out.println("Health: " + fasterMonster.getHealth() + " / " + fasterMonster.getMaxHealth());
+            System.out.println("-----------------------");
             System.out.println();
             System.out.println("-----------------------");
-            System.out.println(slowerMonster.getName());
+            System.out.print(slowerMonster.getName());
+            if (slowerMonster == player) {
+                System.out.print(" (Player) \n");
+            } else {
+                System.out.println("\n ");
+            }
             System.out.println("-----------------------");
-            System.out.println(displayHealth(npc));
+            System.out.println(displayHealth(slowerMonster));
+            System.out.println("Health: " + slowerMonster.getHealth() + " / " + slowerMonster.getMaxHealth());
+            System.out.println("-----------------------");
             System.out.println();
-            System.out.println(fasterMonster.getName() + " attacks " + slowerMonster.getName() + " for " + fasterMonster.getStrength() * 5 * superEffective(fasterMonster, slowerMonster) + "damage!");
+            System.out.println(fasterMonster.getName() + " attacks " + slowerMonster.getName() + " for " + fasterMonster.getStrength() * 5 * superEffective(fasterMonster, slowerMonster) + " damage!");
             if (superEffective(fasterMonster, slowerMonster) == 2) {
                 System.out.println("It is super effective!");
             }
             slowerMonster.damageHealth(fasterMonster.getStrength() * 5 * superEffective(fasterMonster, slowerMonster));
-            if (slowerMonster.isDead()) {
-                fasterMonster.fullHealth();
-                return true;
-            }
             System.out.println();
-            System.out.println(slowerMonster.getName() + " attacks " + fasterMonster.getName() + " for " + slowerMonster.getStrength() * 5 * superEffective(slowerMonster, fasterMonster) + "damage!");
+            if (slowerMonster.isDead()) {
+                break;
+            }
+            System.out.println(slowerMonster.getName() + " attacks " + fasterMonster.getName() + " for " + slowerMonster.getStrength() * 5 * superEffective(slowerMonster, fasterMonster) + " damage!");
             if (superEffective(slowerMonster, fasterMonster) == 2) {
                 System.out.println("It is super effective!");
             }
             fasterMonster.damageHealth(fasterMonster.getStrength() * 5 * superEffective(slowerMonster, fasterMonster));
-            if (fasterMonster.isDead()) {
-                return false;
-            }
             System.out.println();
         }
-        return false;
+        if (player.isDead()) {
+            System.out.println("You lose!");
+        } else {
+            System.out.println("You win!");
+        }
     }
 }
