@@ -10,14 +10,12 @@ public class Battle {
     }
 
     public Battle(Monster player) {
-        int species = (int) (Math.random() * 7);
+        int species = (int) (Math.random() * 4) + 3;
         this.player = player;
-        Monster npc = new Monster(species, player.getLevel() - ((int) (Math.random() * 2) + 1));
+        npc = new Monster(species, player.getLevel() - ((int) (Math.random() * 2) + 1));
     }
 
-
-
-    public String displayHealth(Monster monster) {
+    private String displayHealth(Monster monster) {
         int health = monster.getHealth();
         int maxHealth = monster.getMaxHealth();
         double barValue = (double) maxHealth / 10;
@@ -54,7 +52,8 @@ public class Battle {
         return 1;
     }
 
-    public void initiateBattle() {
+    public int initiateBattle() {
+        int startingHealth = player.getHealth();
         Monster fasterMonster;
         Monster slowerMonster;
         if (player.getSpeed() < npc.getSpeed()) {
@@ -103,13 +102,23 @@ public class Battle {
             if (superEffective(slowerMonster, fasterMonster) == 2) {
                 System.out.println("It is super effective!");
             }
-            fasterMonster.damageHealth(fasterMonster.getStrength() * 5 * superEffective(slowerMonster, fasterMonster));
+            fasterMonster.damageHealth(slowerMonster.getStrength() * 5 * superEffective(slowerMonster, fasterMonster));
             System.out.println();
+            sleep(2000);
+
         }
         if (player.isDead()) {
             System.out.println("You lose!");
         } else {
             System.out.println("You win!");
+        }
+        return startingHealth - player.getHealth();
+    }
+    private void sleep(long time) {
+        try {
+            Thread.sleep(time);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
         }
     }
 }

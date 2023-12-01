@@ -52,18 +52,22 @@ public class Monster {
         dead = false;
         health = 30 + level * 10;
         maxHealth = health;
-        speed = (int) (Math.random() * 3) + 1;
+        speed = ((int) (Math.random() * 3) + 1 ) + level;
     }
 
-    public void checkExp() {
+    public boolean checkExp() {
+        boolean returnValue = false;
         int expLim = level * 10;
         if (exp >= expLim) {
             level ++;
             health += 10;
             maxHealth += 10;
             strength += 1;
+            speed += 1;
+            returnValue = true;
+            exp = exp - expLim; // extra exp is saved for next level
         }
-        exp = exp - expLim; // extra exp is saved for next level
+        return returnValue;
     }
 
     public String findName(int speciesNum) {
@@ -118,6 +122,9 @@ public class Monster {
     }
 
     public int getHealth() {
+        if (health < 0) {
+            return 0;
+        }
         return health;
     }
 
@@ -147,25 +154,25 @@ public class Monster {
 
     public String getDescription() {
         if (species == 0) {
-            return "Leafrook (Grass Type): A sprightly grass Pokémon that resembles a tiny frog.";
+            return "Leafrook (Grass Type): A sprightly grass monster that resembles a tiny frog.";
         }
         if (species == 1) {
-            return "Scorchicub (Fire Type): A cute and cuddly cub Pokémon with a fur that radiates warmth and a playful, fiery spirit.";
+            return "Scorchicub (Fire Type): A cute and cuddly cub monster with a fur that radiates warmth and a playful, fiery spirit.";
         }
         if (species == 2) {
-            return "Squallfin (Water Type): A playful water Pokémon resembling a combination of a fish and a bubble.";
+            return "Squallfin (Water Type): A playful water monster resembling a combination of a fish and a bubble.";
         }
         if (species == 3) {
-            return "Skyquill (Flying Type): A small bird Pokémon with feather quills that it uses to write messages in the sky with clouds.";
+            return "Skyquill (Flying Type): A small bird monster with feather quills that it uses to write messages in the sky with clouds.";
         }
         if (species == 4) {
-            return "Scurryfluff (Normal Type): A rat Pokémon with soft, fluffy fur that allows it to move silently through various environments.";
+            return "Scurryfluff (Normal Type): A rat monster with soft, fluffy fur that allows it to move silently through various environments.";
         }
         if (species == 5) {
-            return "Lumibug (Bug Type): A small bug Pokémon that emits a soft, bioluminescent glow, making it both enchanting and helpful for illuminating dark spaces.";
+            return "Lumibug (Bug Type): A small bug monster that emits a soft, bioluminescent glow, making it both enchanting and helpful for illuminating dark spaces.";
         }
         if (species == 6) {
-            return "Joltbunny (Electric Type): This bunny Pokémon is known for its quick movements and the ability to generate small sparks when hopping.";
+            return "Joltbunny (Electric Type): This bunny monster is known for its quick movements and the ability to generate small sparks when hopping.";
         }
         return "";
     }
