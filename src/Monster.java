@@ -8,7 +8,6 @@ public class Monster {
     private int species;
     private int strength;
     private String name;
-    private boolean dead;
 
     public Monster(int species, int level) {
         this.species = species;
@@ -49,7 +48,6 @@ public class Monster {
         }
         exp = 0;
         strength = 1 + level;
-        dead = false;
         health = 30 + level * 10;
         maxHealth = health;
         speed = ((int) (Math.random() * 3) + 1 ) + level;
@@ -126,6 +124,10 @@ public class Monster {
             return 0;
         }
         return health;
+    }
+
+    public void resetEXP() {
+        exp = 0;
     }
 
     public int getMaxHealth() {
