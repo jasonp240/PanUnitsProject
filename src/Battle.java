@@ -12,7 +12,7 @@ public class Battle {
         this.monInventory = monInventory;
     }
 
-    public Battle(Monster player, ArrayList<Monster> monInventory) {
+    public Battle(Monster player, ArrayList<Monster> monInventory) { // constructor for wilderness (Generates random enemy)
         int species = (int) (Math.random() * 4) + 3;
         this.player = player;
         npc = new Monster(species, player.getLevel() - ((int) (Math.random() * 2) + 1));
@@ -21,12 +21,12 @@ public class Battle {
 
     private boolean checkAllDead() {
         int deadMons = 0;
-        for (int i = 0; i < monInventory.size(); i++) {
-            if (monInventory.get(i).isDead()) {
+        for (int i = 0; i < monInventory.size(); i++) { // iterates through all monsters in inventory
+            if (monInventory.get(i).isDead()) { // checks if the monster is dead
                 deadMons++;
             }
         }
-        if (deadMons == monInventory.size()) {
+        if (deadMons == monInventory.size()) { // if total monsters dead is equal to the total monsters it returns true
             return true;
         } else {
             return false;
@@ -34,18 +34,18 @@ public class Battle {
     }
 
     private String displayHealth(Monster monster) {
-        int health = monster.getHealth();
-        int maxHealth = monster.getMaxHealth();
-        double barValue = (double) maxHealth / 10;
-        int barAmount = (int) Math.round(health / barValue);
-        if (health < barValue) {
+        int health = monster.getHealth(); // finds health of monster
+        int maxHealth = monster.getMaxHealth(); // finds max health of monster
+        double barValue = (double) maxHealth / 10; // finds the value of each individual "bar"
+        int barAmount = (int) Math.round(health / barValue); // finds how much health bars are shown
+        if (health < barValue) { // returns at least 1 health bar if health is below bar amount
             return "[ + x x x x x x x x x ]";
         }
         String returnStr = "[ ";
-        for (int i = 1; i <= barAmount; i++) {
+        for (int i = 1; i <= barAmount; i++) { // adds a "+" for every health bar
             returnStr += "+ ";
         }
-        for (int i = 1; i <= 10 - barAmount; i++) {
+        for (int i = 1; i <= 10 - barAmount; i++) { // adds a "x" for every health bar gone
             returnStr += "x ";
         }
         return returnStr + "]";
@@ -74,14 +74,14 @@ public class Battle {
     }
 
     public int initiateBattle() {
-        if (checkAllDead()) {
+        if (checkAllDead()) { // instantly ends if all monsters are dead
             return 0;
         }
-        int nextMon = 1;
-        int npcHealth = npc.getHealth();
+        int nextMon = 1; // used to switch to next monster if current monster is dead
+        int npcHealth = npc.getHealth(); // gets the original health of the npc (used for exp)
         Monster fasterMonster;
         Monster slowerMonster;
-        if (player.getSpeed() < npc.getSpeed()) {
+        if (player.getSpeed() < npc.getSpeed()) { // finds the faster monster (who attacks first)
             fasterMonster = npc;
             slowerMonster = player;
         } else {
@@ -89,7 +89,7 @@ public class Battle {
             slowerMonster = npc;
         }
         System.out.println(fasterMonster.getName() + " VS " + slowerMonster.getName());
-        while (!checkAllDead() && !npc.isDead()) {
+        while (!checkAllDead() && !npc.isDead()) { // code continues to run until either all the player's monsters are dead or the npc is dead
             System.out.println("-----------------------");
             System.out.print(fasterMonster.getName());
             if (fasterMonster == player) {
@@ -115,20 +115,22 @@ public class Battle {
             System.out.println("-----------------------");
             System.out.println();
             System.out.println(fasterMonster.getName() + " attacks " + slowerMonster.getName() + " for " + fasterMonster.getStrength() * 5 * superEffective(fasterMonster, slowerMonster) + " damage!");
+            // calculates the attack by multiplying the monsters strength with the superEffective multiplier to be printed
             if (superEffective(fasterMonster, slowerMonster) == 2) {
                 System.out.println("It is super effective!");
             }
             slowerMonster.damageHealth(fasterMonster.getStrength() * 5 * superEffective(fasterMonster, slowerMonster));
+            // calculates the attack by multiplying the monsters strength with the superEffective multiplier
             System.out.println();
-            if (slowerMonster.isDead() && slowerMonster != player) {
+            if (slowerMonster.isDead() && slowerMonster != player) { // if the monster dies before attacking player should win or switch to another monster
                 return npcHealth;
             } else if (slowerMonster.isDead() && slowerMonster == player){
                 System.out.println(player.getName() + " fainted!");
-                if (checkAllDead()) {
+                if (checkAllDead()) { // if all player monsters are dead returns "0" so logic class knows that player has loss
                     System.out.println("You lose!");
                     return 0;
                 } else {
-                    while (player.getHealth() == 0) {
+                    while (player.getHealth() == 0) { // if all monsters aren't dead it will change to the next monster for the player
                         player = monInventory.get(nextMon);
                         slowerMonster = player;
                         nextMon++;
@@ -142,7 +144,7 @@ public class Battle {
             fasterMonster.damageHealth(slowerMonster.getStrength() * 5 * superEffective(slowerMonster, fasterMonster));
             System.out.println();
             sleep(2000);
-            if (player.isDead()) {
+            if (player.isDead()) { // same logic as lines 125 - 139
                 System.out.println(player.getName() + " fainted!");
                 if (checkAllDead()) {
                     System.out.println("You lose!");
@@ -157,7 +159,7 @@ public class Battle {
             }
         }
         System.out.println("You win!");
-        return npcHealth;
+        return npcHealth; // returns exp amount equal to the health of the monster fought
     }
 
     public Monster getMonster() {
