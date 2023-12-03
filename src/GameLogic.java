@@ -166,7 +166,7 @@ public class GameLogic {
             }
 
             if (userInput == 3) {
-                Monster boss1 = new Monster(3, 20); // initializes strong monster
+                Monster boss1 = new Monster(6, 20); // initializes strong monster
                 Battle battle = new Battle(starterMon, boss1, monInventory);
                 int exp = battle.initiateBattle();
                 if (exp == 0) {

@@ -52,22 +52,22 @@ public class Battle {
     }
 
     private int superEffective(Monster attackingMonster, Monster defendingMonster) {
-        if (Objects.equals(attackingMonster.getType(), "normal")) {
-            return 1;
-        }
         if (Objects.equals(attackingMonster.getType(), "grass") && Objects.equals(defendingMonster.getType(), "water")) {
             return 2;
         }
         if (Objects.equals(attackingMonster.getType(), "water") && Objects.equals(defendingMonster.getType(), "fire")) {
             return 2;
         }
-        if (Objects.equals(attackingMonster.getType(), "fire") && (Objects.equals(defendingMonster.getType(), "grass")) || Objects.equals(defendingMonster.getType(), "bug")) {
+        if (Objects.equals(attackingMonster.getType(), "fire") && (Objects.equals(defendingMonster.getType(), "grass") || Objects.equals(defendingMonster.getType(), "bug"))) {
             return 2;
         }
-        if (Objects.equals(attackingMonster.getType(), "flying") && (Objects.equals(defendingMonster.getType(), "grass")) || Objects.equals(defendingMonster.getType(), "bug")) {
+        if (Objects.equals(attackingMonster.getType(), "flying") && (Objects.equals(defendingMonster.getType(), "grass") || Objects.equals(defendingMonster.getType(), "bug"))) {
             return 2;
         }
-        if (Objects.equals(attackingMonster.getType(), "electric") && (Objects.equals(defendingMonster.getType(), "flying")) || Objects.equals(defendingMonster.getType(), "water")) {
+        if (Objects.equals(attackingMonster.getType(), "electric") && (Objects.equals(defendingMonster.getType(), "flying") || Objects.equals(defendingMonster.getType(), "water"))) {
+            return 2;
+        }
+        if (Objects.equals(attackingMonster.getType(), "bug") && Objects.equals(defendingMonster.getType(), "grass")) {
             return 2;
         }
         return 1;
